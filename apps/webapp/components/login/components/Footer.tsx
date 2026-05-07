@@ -1,17 +1,12 @@
-import FacebookIcon from '@mui/icons-material/Facebook';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { styled } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
-import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
-import { KFMEDIADiscordInvite } from '@packages/config/constants';
-import { FaXTwitter } from 'react-icons/fa6';
+import { FaXTwitter, FaTelegram } from 'react-icons/fa6';
 
 import { useBaseCurrentDomain } from 'hooks/useBaseCurrentDomain';
-import DiscordIcon from 'public/images/logos/discord_logo.svg';
 
 import { Container } from './LoginLayout';
 
@@ -52,44 +47,40 @@ export default function Footer() {
     <Background mt={6} sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
       {customDomain ? (
         <Box px={3} py={3} sx={{ float: 'right' }}>
-          Powered by <Link href='https://KFMEDIA.io'> KFMEDIA</Link>
+          Powered by <Link href='https://kingfishersmedia.io'> KFMEDIA</Link>
         </Box>
       ) : customDomain === null ? (
         <Container pt={5} pb={9} px={3}>
           <Grid container spacing={6}>
             <Grid size={{ xs: 12, sm: 4 }}>
               <LinkHeader>Links</LinkHeader>
-              <StyledLink href='https://KFMEDIA.io' target='_blank'>
+              <StyledLink href='https://kingfishersmedia.io' target='_blank'>
                 What is KFMEDIA?
               </StyledLink>
-              <StyledLink href='https://KFMEDIA.io/privacy-policy' target='_blank'>
+              <StyledLink href='https://kingfishersmedia.io/privacy-policy' target='_blank'>
                 Privacy Policy
               </StyledLink>
-              <StyledLink href='https://KFMEDIA.io/terms' target='_blank'>
+              <StyledLink href='https://kingfishersmedia.io/terms' target='_blank'>
                 Terms
               </StyledLink>
             </Grid>
             <Grid size={{ xs: 12, sm: 4 }}>
               <LinkHeader>About</LinkHeader>
-              <StyledLink href='mailto:hello@KFMEDIA.io'>hello@KFMEDIA.io</StyledLink>
-              <Typography color='secondary'>New York, NY</Typography>
+              <StyledLink href='mailto:Support@kingfishermedia.io'>Support@kingfishermedia.io</StyledLink>
+              <Typography variant='body2' color='secondary' sx={{ mt: 1 }}>
+                <StyledLink href='https://github.com/KingfishersMediaLLC/kfmedia-learning-center' target='_blank'>
+                  View Source Code
+                </StyledLink>
+              </Typography>
             </Grid>
             <Grid size={{ xs: 12, sm: 4 }} alignItems='center'>
               <LinkHeader>Social</LinkHeader>
               <Box display='flex' alignItems='center' sx={{ justifyContent: { xs: 'center', sm: 'left' } }}>
-                <StyledIconButton href='https://www.linkedin.com/company/KFMEDIA' target='_blank'>
-                  <LinkedInIcon />
-                </StyledIconButton>
-                <StyledIconButton href='https://x.com/KFMEDIA' target='_blank'>
+                <StyledIconButton href='https://x.com/KMLLCW3' target='_blank'>
                   <FaXTwitter />
                 </StyledIconButton>
-                <StyledIconButton href='https://www.facebook.com/KFMEDIA.io' target='_blank'>
-                  <FacebookIcon />
-                </StyledIconButton>
-                <StyledIconButton href={KFMEDIADiscordInvite} target='_blank'>
-                  <SvgIcon viewBox='0 -5 70 70'>
-                    <DiscordIcon />
-                  </SvgIcon>
+                <StyledIconButton href='https://t.me/KFMEDIACommunity' target='_blank'>
+                  <FaTelegram />
                 </StyledIconButton>
               </Box>
             </Grid>
