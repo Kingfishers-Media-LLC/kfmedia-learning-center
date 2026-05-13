@@ -1,8 +1,34 @@
 import type { LoggedInUser } from '@packages/profile/getUser';
 import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect, useMemo } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
-import { useGetTriggerUser, useLogout } from 'charmClient/hooks/profile';
+// ── Phase 1 Stub: Mock user for local development ──
+const MOCK_USER = {
+  id: 'local-dev-user',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  username: 'Local Developer',
+  avatar: null,
+  email: 'dev@localhost',
+  deletedAt: null,
+  discordId: null,
+  farcasterId: null,
+  googleAccountId: null,
+  identityType: 'Wallet',
+  telegramId: null,
+  favorites: [],
+  spaceRoles: [],
+  wallets: [],
+  googleAccounts: [],
+  verifiedEmails: [],
+  discordUser: null,
+  telegramUser: null,
+  farcasterUser: null,
+  notificationState: null,
+  isNew: false,
+  otp: null,
+  profile: null,
+} as LoggedInUser;
 
 export type IContext = {
   user: LoggedInUser | null;
@@ -19,49 +45,37 @@ export const UserContext = createContext<Readonly<IContext>>({
   updateUser: () => Promise.resolve(undefined),
   isLoaded: false,
   refreshUser: () => Promise.resolve(undefined),
-  logoutUser: () => Promise.resolve()
+  logoutUser: () => Promise.resolve(),
 });
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const { data: user, trigger: getUser, error: userError } = useGetTriggerUser();
-  const { trigger: logout } = useLogout();
-  const isLoaded = user !== undefined || !!userError;
+  const [userState, setUserState] = useState<LoggedInUser | null>(MOCK_USER);
+  const isLoaded = true;
 
   async function logoutUser() {
-    await logout();
+    setUserState(null);
     window.location.href = window.location.origin;
   }
 
   async function refreshUser(updates: Partial<LoggedInUser> = {}) {
-    return getUser(undefined, {
-      optimisticData: (_user) => {
-        return _user ? { ..._user, ...updates } : null;
-      },
-      onSuccess: async (_user) => {
-        if (_user?.deletedAt) {
-          await logoutUser();
-        }
-      }
-    });
+    const updated = userState ? { ...userState, ...updates } : null;
+    setUserState(updated);
+    return updated;
   }
-
-  useEffect(() => {
-    refreshUser();
-  }, []);
 
   const updateUser = async (updatedUser: Partial<LoggedInUser>) => refreshUser(updatedUser);
   const setUser = async (updatedUser: Partial<LoggedInUser>) => refreshUser(updatedUser);
 
   const value = useMemo<IContext>(() => {
     return {
-      user: user || null,
+      user: userState,
       setUser,
       isLoaded,
       updateUser,
       refreshUser,
-      logoutUser
+      logoutUser,
     };
-  }, [user, isLoaded]);
+  }, [userState, isLoaded]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }

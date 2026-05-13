@@ -23,10 +23,7 @@ export type SpaceSettingsSection =
   | 'invites'
   | 'import'
   | 'api'
-  | 'subscription'
   | 'credentials'
-  | 'proposals'
-  | 'integrations'
   | 'notifications';
 
 export type SpaceSettingsTab = { icon: ReactNode; path: SpaceSettingsSection; label: string; adminOnly?: boolean };
@@ -37,10 +34,7 @@ export const SPACE_SETTINGS_TABS: SpaceSettingsTab[] = [
   { icon: <GroupAddOutlinedIcon fontSize='small' />, path: 'invites', label: 'Invites', adminOnly: true },
   { icon: <FileDownloadOutlinedIcon fontSize='small' />, path: 'import', label: 'Import' },
   { icon: <CloudSyncOutlinedIcon fontSize='small' />, path: 'api', label: 'API' },
-  { icon: <CreditCardIcon fontSize='small' />, path: 'subscription', label: 'Billing' },
   { icon: <MedalIcon fontSize='small' />, path: 'credentials', label: 'Credentials' },
-  { icon: <ProposalIcon fontSize='small' />, path: 'proposals', label: 'Proposals' },
-  { icon: <AppsIcon fontSize='small' />, path: 'integrations', label: 'Integrations' },
   { icon: <NotificationsOutlinedIcon fontSize='small' />, path: 'notifications', label: 'Notifications' }
 ];
 

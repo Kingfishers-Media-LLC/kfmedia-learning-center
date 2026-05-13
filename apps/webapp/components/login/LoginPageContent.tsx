@@ -12,7 +12,7 @@ import LoadingComponent from 'components/common/LoadingComponent';
 import WorkspaceAvatar from 'components/common/PageLayout/components/Sidebar/components/WorkspaceAvatar';
 import { useBaseCurrentDomain } from 'hooks/useBaseCurrentDomain';
 import { useSnackbar } from 'hooks/useSnackbar';
-import splashImage from 'public/images/kfmedia-learning-center-logo.png';
+import splashImage from 'public/images/artwork/world.png';
 
 import { LoginButton } from './components/LoginButton';
 import { LoginErrorModal } from './components/LoginErrorModal';
@@ -28,6 +28,13 @@ export function LoginPageContent({ hideLoginOptions, isLoggingIn, children }: Pr
   const { showMessage } = useSnackbar();
   const router = useRouter();
   const { customDomain, spaceFromPath, isSpaceLoading } = useBaseCurrentDomain();
+
+  // STUB: Auto-redirect to app when in dev mode so we can audit without auth wall
+  useEffect(() => {
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+      router.replace('/kfmedia-learning');
+    }
+  }, [router]);
 
   // We either have disabled account error (handled by our modal) or discord error (handled with snackbar)
   const [discordLoginError, setDiscordLoginError] = useState<string | null>(null);
@@ -78,12 +85,10 @@ export function LoginPageContent({ hideLoginOptions, isLoggingIn, children }: Pr
         display: { xs: 'none', md: 'block' },
         fontSize: 20,
         mb: { sm: 2, md: 6 },
-        maxWidth: { md: '600px' }
+        maxWidth: { md: '520px' }
       }}
     >
-      We are committed to fostering a culture where learning
-      <br />
-      is continuous, accessible, and transformative.
+      Manage grants. Connect with builders. Forge new ideas.
     </Typography>
   );
 
@@ -91,28 +96,8 @@ export function LoginPageContent({ hideLoginOptions, isLoggingIn, children }: Pr
     `Login to ${spaceFromPath?.name}`
   ) : customDomain === null ? (
     <>
-      <Typography
-        sx={{
-          display: 'block',
-          fontSize: { xs: 22, md: 32 },
-          fontWeight: 'bold',
-          lineHeight: '1.2em',
-          fontFamily: 'Montserrat, sans-serif'
-        }}
-      >
-        Building solutions that makes education
-      </Typography>
-      <Typography
-        sx={{
-          display: 'block',
-          fontSize: { xs: 22, md: 32 },
-          fontWeight: 'bold',
-          lineHeight: '1.2em',
-          fontFamily: 'Montserrat, sans-serif'
-        }}
-      >
-        regenerative, rewarding, and equitable globally.
-      </Typography>
+      The Network for <br />
+      Onchain Communities
     </>
   ) : null;
 
@@ -120,7 +105,7 @@ export function LoginPageContent({ hideLoginOptions, isLoggingIn, children }: Pr
     <Container px={3} data-test='login-page-content'>
       <Grid container>
         <Grid
-          size={{ xs: 12, md: 8 }}
+          size={{ xs: 12, md: 6 }}
           sx={{
             display: 'flex',
             justifyContent: {
@@ -133,7 +118,7 @@ export function LoginPageContent({ hideLoginOptions, isLoggingIn, children }: Pr
             <Typography
               sx={{
                 display: { xs: 'none', md: 'block' },
-                fontSize: { xs: 22, md: 32 },
+                fontSize: { xs: 30, md: 48 },
                 fontWeight: 'bold',
                 lineHeight: '1.1em',
                 mt: { xs: 3, md: '100px' },
@@ -158,7 +143,7 @@ export function LoginPageContent({ hideLoginOptions, isLoggingIn, children }: Pr
             {children}
           </Box>
         </Grid>
-        <Grid size={{ md: 4 }} display={{ xs: 'none', md: 'block' }} alignItems='center'>
+        <Grid size={{ md: 6 }} display={{ xs: 'none', md: 'block' }} alignItems='center'>
           {image}
         </Grid>
       </Grid>

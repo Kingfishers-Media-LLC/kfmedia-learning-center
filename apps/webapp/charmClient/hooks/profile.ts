@@ -1,69 +1,127 @@
 import type { UserWallet } from '@charmverse/core/prisma-client';
 import type { LoggedInUser } from '@packages/profile/getUser';
-
 import type { SignatureVerificationPayloadWithAddress } from '@packages/lib/blockchain/signAndVerify';
 import type { EmailPreferences } from 'pages/api/profile/onboarding-email';
 
-import { useDELETE, useGETtrigger, usePOST, usePUT } from './helpers';
+// ── Phase 1 Stub: Mock user for local development ──
+const MOCK_USER = {
+  id: 'local-dev-user',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  username: 'Local Developer',
+  avatar: null,
+  email: 'dev@localhost',
+  deletedAt: null,
+  discordId: null,
+  farcasterId: null,
+  googleAccountId: null,
+  identityType: 'Wallet',
+  telegramId: null,
+  favorites: [],
+  spaceRoles: [],
+  wallets: [],
+  googleAccounts: [],
+  verifiedEmails: [],
+  discordUser: null,
+  telegramUser: null,
+  farcasterUser: null,
+  notificationState: null,
+  isNew: false,
+  otp: null,
+  profile: null,
+} as LoggedInUser;
+
+// Helper: creates a mock SWR trigger hook
+function mockTrigger<TReturn>(value: TReturn) {
+  return () => ({
+    data: undefined as any,
+    trigger: async (_data?: any, _opts?: any) => value,
+    error: undefined,
+    isMutating: false,
+    isLoading: false,
+  });
+}
+
+// Helper: creates a mock mutation hook
+function mockMutation<TReturn>(value: TReturn) {
+  return () => ({
+    data: undefined as any,
+    trigger: async (_data?: any, _opts?: any) => value,
+    error: undefined,
+    isMutating: false,
+  });
+}
 
 export function useSaveOnboardingEmail() {
-  return usePUT<EmailPreferences, LoggedInUser>('/api/profile/onboarding-email');
+  return mockMutation<LoggedInUser>(MOCK_USER)();
 }
 
 export function useCreateOtp() {
-  return usePOST<undefined, { code: string; uri: string; recoveryCode: string }>(`/api/profile/otp`);
+  return mockMutation<{ code: string; uri: string; recoveryCode: string }>({
+    code: 'mock',
+    uri: 'mock',
+    recoveryCode: 'mock',
+  })();
 }
 
 export function useGetOtp() {
-  return useGETtrigger<{ authCode: string }, { code: string; uri: string }>(`/api/profile/otp`);
+  return mockTrigger<{ code: string; uri: string }>({
+    code: 'mock',
+    uri: 'mock',
+  })();
 }
 
 export function useDeleteOtp() {
-  return useDELETE<{ authCode: string }>(`/api/profile/otp`);
+  return mockMutation<void>(undefined)();
 }
 
 export function useActivateOtp() {
-  return usePUT<{ authCode: string }, void>(`/api/profile/otp/activate`);
+  return mockMutation<void>(undefined)();
 }
 
 export function useResetRecoveryCode() {
-  return usePUT<{ authCode: string }, { code: string; uri: string; recoveryCode: string }>(
-    `/api/profile/otp/recovery-code`
-  );
+  return mockMutation<{ code: string; uri: string; recoveryCode: string }>({
+    code: 'mock',
+    uri: 'mock',
+    recoveryCode: 'mock',
+  })();
 }
 
 export function useVerifyRecoveryCode() {
-  return usePOST<{ backupCode: string }, { user: LoggedInUser; backupCode: string }>(`/api/profile/otp/recovery-code`);
+  return mockMutation<{ user: LoggedInUser; backupCode: string }>({
+    user: MOCK_USER,
+    backupCode: 'mock',
+  })();
 }
 
 export function useSetPrimaryWallet() {
-  return usePUT<{ walletId: string }, void>(`/api/profile/primary-wallet`);
+  return mockMutation<void>(undefined)();
 }
 
 export function useVerifyOtp() {
-  return usePOST<{ authCode: string }, LoggedInUser>(`/api/profile/otp/verify`);
+  return mockMutation<LoggedInUser>(MOCK_USER)();
 }
 
 export function useGetTriggerUser() {
-  return useGETtrigger<undefined, LoggedInUser | null>('/api/profile');
+  return mockTrigger<LoggedInUser | null>(MOCK_USER)();
 }
 
 export function useLogin() {
-  return usePOST<SignatureVerificationPayloadWithAddress, LoggedInUser | { otpRequired: true }>('/api/session/login');
+  return mockMutation<LoggedInUser | { otpRequired: true }>(MOCK_USER)();
 }
 
 export function useLogout() {
-  return usePOST<undefined, undefined>(`/api/session/logout`);
+  return mockMutation<undefined>(undefined)();
 }
 
 export function useCreateUser() {
-  return usePOST<SignatureVerificationPayloadWithAddress, LoggedInUser>('/api/profile');
+  return mockMutation<LoggedInUser>(MOCK_USER)();
 }
 
 export function useRemoveWallet() {
-  return usePOST<Pick<UserWallet, 'address'>, LoggedInUser>('/api/profile/remove-wallet');
+  return mockMutation<LoggedInUser>(MOCK_USER)();
 }
 
 export function useAddUserWallets() {
-  return usePOST<SignatureVerificationPayloadWithAddress, LoggedInUser>('/api/profile/add-wallets');
+  return mockMutation<LoggedInUser>(MOCK_USER)();
 }
