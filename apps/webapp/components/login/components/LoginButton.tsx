@@ -34,8 +34,7 @@ export interface DialogProps {
   isOpen: boolean;
   redirectUrl?: string;
   onClose: () => void;
-  emailOnly?: boolean;
-}
+  }
 
 const StyledButton = styled(Button)`
   width: 100%;
@@ -60,8 +59,7 @@ type Props = {
 
 export function LoginButton({ redirectUrl, signInLabel = 'Sign in', showSignup, emailOnly }: Props) {
   const loginDialog = usePopupState({ variant: 'popover', popupId: 'login-dialog' });
-  const { resetSigning } = useWeb3Account();
-
+ 
   const handleClickOpen = (eventOrAnchorEl?: Element | SyntheticEvent<Element, Event> | null | undefined) => {
     loginDialog.open(eventOrAnchorEl);
   };
